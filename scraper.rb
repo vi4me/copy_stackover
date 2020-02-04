@@ -17,6 +17,7 @@ Capybara.configure do |config|
 	config.default_driver = :selenium
 end
 # Visit
+
 browser = Capybara.current_session
 driver = browser.driver.browser
 
@@ -37,12 +38,13 @@ loop do
 end
 
 posts = Array.new
+posts = posts[0..3]
 doc = Nokogiri::HTML(driver.page_source);
 post_cards = doc.css('.question-summary')
 post_cards.each do |post_card|
 
-	title = post_card.css('h3').text
-	voice = post_card.css('div.votes').text.to_i
+	title = post_card.css('.question-hyperlink').text
+	voice = post_card.css('.votes').text.to_i
 	count_answers = post_card.css('.status').text.to_i
 	views = post_card.css('.views').text.to_i
 	language = post_card.css('.post-tag').text
@@ -59,14 +61,7 @@ post_cards.each do |post_card|
     	author: author
 	}
 	posts << post
-		# puts "title: #{title}"
-		# puts "voice: #{voice}"
-		# puts "count_answers: #{count_answers}"
-		# puts "views: #{views}"
-		# puts "language: #{language}"
-		# puts "time: #{time}"
-		# puts "author: #{author}"
-		# puts "=="
+
 end
 	
 CSV.open('copy_stackoverflow.csv', 'w', write_headers: true, headers: posts.first.keys) do |csv|
