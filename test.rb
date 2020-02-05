@@ -1,14 +1,7 @@
 require 'selenium-webdriver'
 require 'capybara'
 require 'capybara/rspec'
-require 'pry'
 require './scraper.rb'
-
-describe "the signin process" do
-  it "say hello" do 
-    puts "hello"
-  end
-end
 
 describe "testing" do
   include Capybara::DSL
@@ -22,7 +15,28 @@ describe "testing" do
     page.has_xpath?('/users')
     expect(find('h1')).to have_content 'Вопросы с меткой [jquery]'
   end
+   
+  it "file" do
+    expect(File).to exist("copy_stackoverflow.csv")
+
+    expect { File.open('copy_stackoverflow.csv') }.to_not raise_error(Errno::ENOENT)
+  end
+
+  it "write text in file" do
+    @buffer = StringIO.new()
+    @filename = "copy_stackoverflow.csv"
+    @content = "some text"
+    allow(File).to receive(:open).with(@filename,'w').and_yield( @buffer )
+
+    # call the function that writes to the file
+    File.open(@filename, 'w') {|f| f.write(@content)}
+
+    # reading the buffer and checking its content.
+    expect(@buffer.string).to eq(@content)
+  end
+
+  it "present content in file" do
+    File.read("copy_stackoverflow.csv").should include "title"
+  end
 
 end
-
-

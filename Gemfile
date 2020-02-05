@@ -8,6 +8,5 @@ gem 'selenium-webdriver'
 gem 'capybara'	
 gem 'poltergeist'
 gem 'rspec'
-gem 'pry'
 
 # gem "rails"

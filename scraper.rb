@@ -38,7 +38,6 @@ loop do
 end
 
 posts = Array.new
-posts = posts[0..3]
 doc = Nokogiri::HTML(driver.page_source);
 post_cards = doc.css('.question-summary')
 post_cards.each do |post_card|
